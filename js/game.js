@@ -1,18 +1,24 @@
 (function(window, document) {
+
   //Initialize constants
-
   const FIELD_SIZE = 400; //This is how big the canvas is
-  const SIZE = 10; //Size of grid cell for drawing _snake and _food
-  const SNAKE_SIZE = 5; //Initial _snake length
+  const SIZE = 10; //Size of grid cell for drawing snake and food
+  const SNAKE_SIZE = 5; //Initial snake length
+  const ARROW_MAP = {
+    37: 'left',
+    38: 'up',
+    39: 'right',
+    40: 'down'
+  };
 
-  const _canvas = document.getElementById('field');
-  const _context = _canvas.getContext('2d');
+  //Grab the current context of the canvas for drawing.
+  const _context = document.getElementById('field').getContext('2d');
 
   //Initialize game objects that are available within the module
   let _food = {};
   let _snake = [{ x: 0, y: FIELD_SIZE / 4 }]; //We are going to start from the top left
   let _dir = 'right'; //Initial Direction
-  let _newDir = null;
+  let _newDir = null; //New Direction on user input
   let _gameTimer = null;
 
   function drawFood() {
@@ -143,17 +149,11 @@
   }
 
   function initGame() {
-    const arrowMap = {
-      37: 'left',
-      38: 'up',
-      39: 'right',
-      40: 'down'
-    };
     drawSnake();
     drawFood();
     _gameTimer = setInterval(playGame, 100);
     window.onkeydown = e => {
-      _newDir = arrowMap[e.keyCode] || _dir;
+      _newDir = ARROW_MAP[e.keyCode] || _dir;
     };
   }
 
